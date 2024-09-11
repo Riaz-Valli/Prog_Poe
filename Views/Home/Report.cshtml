@@ -1,0 +1,126 @@
+﻿@model Report
+
+@using (Html.BeginForm("SubmitReport", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "reportForm" }))
+{
+    <div class="form-container">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="Location" required class="form-input" />
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="Category" required class="form-input" />
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="Description" required class="form-input"></textarea>
+
+        <label for="attachment">Attachment:</label>
+        <input type="file" id="attachment" name="Attachment" class="form-input" />
+
+        <div class="button-container">
+            <button type="submit" class="submit-button" onclick="startProgressBar(event)">Submit</button>
+            <button type="button" class="back-button" onclick="window.location.href='@Url.Action("Index", "Home")'">Back to Home Page</button>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p id="progressMessage" class="progress-message"></p>
+    </div>
+}
+
+<style>
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .button-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    .submit-button, .back-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+    }
+
+    .submit-button {
+        background-color: #28a745;
+    }
+
+    .back-button {
+        background-color: #6c757d;
+    }
+
+    .submit-button:hover {
+        background-color: #218838;
+    }
+
+    .back-button:hover {
+        background-color: #5a6268;
+    }
+
+    .progress {
+        width: 100%;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        margin-top: 1rem;
+    }
+
+    .progress-bar {
+        width: 0%;
+        height: 20px;
+        background-color: #28a745;
+        border-radius: 5px;
+        transition: width 0.4s ease;
+    }
+
+    .progress-message {
+        text-align: center;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        color: #333;
+    }
+</style>
+
+<script>
+    function startProgressBar(event) {
+        event.preventDefault(); 
+        
+        var progressBar = document.getElementById('progressBar');
+        var progressMessage = document.getElementById('progressMessage');
+        var width = 0;
+
+       
+        progressMessage.textContent = 'Filing report...';
+
+        var interval = setInterval(function () {
+            if (width >= 100) {
+                clearInterval(interval);
+                progressMessage.textContent = 'Report filed successfully!'; 
+                setTimeout(function () {
+                    document.getElementById('reportForm').submit(); 
+                }, 500); 
+            } else {
+                width++;
+                progressBar.style.width = width + '%';
+            }
+        }, 10); 
+    }
+</script>

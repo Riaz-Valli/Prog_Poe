@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Report>
+
+<div class="container">
+    <h1>All Reports</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Attachment</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in Model)
+            {
+                <tr>
+                    <td>@report.Location</td>
+                    <td>@report.Category</td>
+                    <td>@report.Description</td>
+                    <td><a href="@Url.Content(report.Attachment)" target="_blank">View Attachment</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 1rem;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    thead {
+        background-color: #28a745;
+        color: white;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+        background-color: #e2e2e2;
+    }
+
+    a {
+        color: #28a745;
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+</style>
