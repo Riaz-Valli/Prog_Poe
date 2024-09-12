@@ -22,9 +22,19 @@ public class HomeController : Controller
         var reports = _customLinkedList.GetAllReports();
         return View(reports);
     }
+
     [HttpPost]
     public IActionResult SubmitReport(IFormFile attachment, string location, string category, string description)
     {
+        // Create a new report
+        var report = new Report
+        {
+            Location = location,
+            Category = category,
+            Description = description
+        };
+
+        // If an attachment is provided, save the file and set the attachment URL
         if (attachment != null && attachment.Length > 0)
         {
             // Get the path for the uploads directory
@@ -45,18 +55,17 @@ public class HomeController : Controller
                 attachment.CopyTo(stream);
             }
 
-            // Create a new report with the file URL
-            var report = new Report
-            {
-                Location = location,
-                Category = category,
-                Description = description,
-                Attachment = $"/uploads/{fileName}"
-            };
-
-            // Add the report to the custom linked list
-            _customLinkedList.Add(report);
+            // Set the attachment URL
+            report.Attachment = $"/uploads/{fileName}";
         }
+        else
+        {
+            // If no attachment is provided, set the Attachment property to null or an empty string
+            report.Attachment = null;
+        }
+
+        // Add the report to the custom linked list
+        _customLinkedList.Add(report);
 
         // Redirect to the Report view
         return RedirectToAction("Report");

@@ -18,7 +18,16 @@
                     <td>@report.Location</td>
                     <td>@report.Category</td>
                     <td>@report.Description</td>
-                    <td><a href="@Url.Content(report.Attachment)" target="_blank">View Attachment</a></td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(report.Attachment))
+                        {
+                            <a href="@Url.Content(report.Attachment)" target="_blank">View Attachment</a>
+                        }
+                        else
+                        {
+                            <span>No Attachment</span>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
