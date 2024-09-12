@@ -1,37 +1,48 @@
 ﻿@model IEnumerable<Report>
 
 <div class="container">
+    <div class="button-container">
+        <button type="button" class="back-button" onclick="window.location.href='@Url.Action("Index", "Home")'">Back to Home Page</button>
+    </div>
+
     <h1>All Reports</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Location</th>
-                <th>Category</th>
-                <th>Description</th>
-                <th>Attachment</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var report in Model)
-            {
+    @if (Model == null || !Model.Any())
+    {
+        <p>No reports filed.</p>
+    }
+    else
+    {
+        <table>
+            <thead>
                 <tr>
-                    <td>@report.Location</td>
-                    <td>@report.Category</td>
-                    <td>@report.Description</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(report.Attachment))
-                        {
-                            <a href="@Url.Content(report.Attachment)" target="_blank">View Attachment</a>
-                        }
-                        else
-                        {
-                            <span>No Attachment</span>
-                        }
-                    </td>
+                    <th>Location</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Attachment</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var report in Model)
+                {
+                    <tr>
+                        <td>@report.Location</td>
+                        <td>@report.Category</td>
+                        <td>@report.Description</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(report.Attachment))
+                            {
+                                <a href="@Url.Content(report.Attachment)" target="_blank">View Attachment</a>
+                            }
+                            else
+                            {
+                                <span>No Attachment</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
 
 <style>
@@ -43,6 +54,23 @@
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
+    .button-container {
+        margin-bottom: 1rem;
+    }
+
+    .back-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+        background-color: #6c757d;
+    }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
 
     h1 {
         text-align: center;
@@ -83,4 +111,10 @@
         a:hover {
             text-decoration: underline;
         }
+
+    p {
+        text-align: center;
+        color: #333;
+        font-size: 1.2rem;
+    }
 </style>

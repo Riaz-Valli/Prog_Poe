@@ -1,6 +1,7 @@
 ﻿@*
 Index.cshtml
 *@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,7 @@ Index.cshtml
         body {
             margin: 0;
             padding: 0;
-            background-image: url('');
+            background-image: url('/Images/download.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -23,7 +24,7 @@ Index.cshtml
             text-align: center;
             padding: 20px;
             max-width: 600px;
-            background-color: rgba(255, 255, 255, 0.8); 
+            background-color: rgba(255, 255, 255, 0.8);
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
@@ -39,20 +40,20 @@ Index.cshtml
         }
 
         .btn-green {
-            background-color: #28a745; 
+            background-color: #28a745;
             color: white;
         }
 
             .btn-green:hover {
-                background-color: #218838; 
+                background-color: #218838;
             }
 
         .btn-disabled {
-            background-color: #d3d3d3; 
+            background-color: #d3d3d3;
             color: #6c757d;
             cursor: not-allowed;
         }
-       
+
         .welcome-text {
             font-size: 24px;
             font-weight: bold;
@@ -72,8 +73,14 @@ Index.cshtml
         <div class="select-task">Select a task</div>
         <button class="btn btn-green" onclick="location.href='@Url.Action("Report")'">Report Issue</button>
         <button class="btn btn-green" onclick="location.href='@Url.Action("AllReports")'">View Reports</button>
-        <button class="btn btn-disabled" disabled>Local Events and Annoucements</button>
-        <button class="btn btn-disabled" disabled>Service Request Status</button>
+        <button class="btn btn-disabled" onclick="showComingSoon()">Local Events and Announcements</button>
+        <button class="btn btn-disabled" onclick="showComingSoon()">Service Request Status</button>
     </div>
+
+    <script>
+        function showComingSoon() {
+            alert('Coming Soon');
+        }
+    </script>
 </body>
 </html>

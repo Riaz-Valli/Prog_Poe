@@ -3,6 +3,8 @@
 @using (Html.BeginForm("SubmitReport", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "reportForm" }))
 {
     <div class="form-container">
+        <h2 class="form-heading">Submit a Report</h2>
+
         <label for="location">Location:</label>
         <input type="text" id="location" name="Location" required class="form-input" />
 
@@ -12,7 +14,7 @@
         <label for="description">Description:</label>
         <textarea id="description" name="Description" required class="form-input"></textarea>
 
-        <label for="attachment">Attachment:</label>
+        <label for="attachment">Attachment (optional):</label>
         <input type="file" id="attachment" name="Attachment" class="form-input" />
 
         <div class="button-container">
@@ -28,6 +30,16 @@
 }
 
 <style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url('/Images/images.jpg');  
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+    }
+
     .form-container {
         display: flex;
         flex-direction: column;
@@ -35,9 +47,16 @@
         max-width: 600px;
         margin: 2rem auto;
         padding: 2rem;
-        background-color: #f5f5f5;
+        background-color: rgba(255, 255, 255, 0.8);
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-heading {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 1rem;
+        color: #28a745;
     }
 
     .form-input {
@@ -101,26 +120,36 @@
 
 <script>
     function startProgressBar(event) {
-        event.preventDefault(); 
-        
+        event.preventDefault();
+
+        var location = document.getElementById('location').value.trim();
+        var category = document.getElementById('category').value.trim();
+        var description = document.getElementById('description').value.trim();
+        var attachment = document.getElementById('attachment').files.length;
+
         var progressBar = document.getElementById('progressBar');
         var progressMessage = document.getElementById('progressMessage');
-        var width = 0;
 
-       
+        if (!location || !category || !description) {
+            progressMessage.textContent = 'Please fill in all required fields.';
+            progressBar.style.width = '0%';
+            return;
+        }
+
         progressMessage.textContent = 'Filing report...';
 
+        var width = 0;
         var interval = setInterval(function () {
             if (width >= 100) {
                 clearInterval(interval);
-                progressMessage.textContent = 'Report filed successfully!'; 
+                progressMessage.textContent = 'Report filed successfully!';
                 setTimeout(function () {
-                    document.getElementById('reportForm').submit(); 
-                }, 500); 
+                    document.getElementById('reportForm').submit();
+                }, 500);
             } else {
                 width++;
                 progressBar.style.width = width + '%';
             }
-        }, 10); 
+        }, 10);
     }
 </script>
