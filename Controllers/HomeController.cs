@@ -1,9 +1,7 @@
-// HomeController.cs
 using Microsoft.AspNetCore.Mvc;
 
 public class HomeController : Controller
 {
-    //instance of CustomLinkedList 
     private static CustomLinkedList _customLinkedList = new CustomLinkedList();
 
     public IActionResult Index()
