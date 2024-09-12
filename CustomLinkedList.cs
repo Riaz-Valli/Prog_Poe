@@ -1,4 +1,6 @@
-﻿// CustomLinkedList.cs
+﻿// Topic : Custom Linked List
+//Available at: https://www.geeksforgeeks.org/linked-list-implementation-in-c-sharp/ 
+
 using System;
 using System.Collections.Generic;
 
@@ -43,10 +45,10 @@ public class CustomLinkedList
         return reports;
     }
 
-    // Internal Node class for storing data and pointing to the next node
+    //Node class for storing data and pointing to the next node
     private class Node
     {
-        public Report Data { get; set; } // Data stored in the node (Report object)
+        public Report Data { get; set; } // Data stored in the node
         public Node Next { get; set; }   // Reference to the next node
 
         public Node(Report data)

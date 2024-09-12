@@ -1,3 +1,6 @@
+//Topic : MVC
+//Available at: https://dotnettutorials.net/course/asp-dot-net-mvc-tutorials/
+//Available at: https://learn.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/getting-started
 using Microsoft.AspNetCore.Mvc;
 
 public class HomeController : Controller
@@ -63,7 +66,7 @@ public class HomeController : Controller
         }
         else
         {
-            // If no attachment is provided, set the Attachment property to null or an empty string
+            //No attachment, set the Attachment property to null
             report.Attachment = null;
         }
 
