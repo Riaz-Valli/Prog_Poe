@@ -14,6 +14,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Feedback()
+    {
+        return View();
+    }
+
     public IActionResult AllReports()
     {
         // Fetch reports from the custom linked list
