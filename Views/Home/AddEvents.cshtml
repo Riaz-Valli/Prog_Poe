@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Events</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f4f4f4; 
+        }
+
+        h1 {
+            text-align: center; 
+            color: #333; 
+        }
+
+        form {
+            max-width: 500px; 
+            margin: auto; 
+            padding: 20px; 
+            background-color: white; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+        }
+
+        label {
+            display: block; 
+            margin: 10px 0 5px; 
+            font-weight: bold; 
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            box-sizing: border-box;
+            margin-bottom: 15px; 
+        }
+
+        textarea {
+            resize: vertical; 
+        }
+
+            input[type="text"]:focus,
+            input[type="date"]:focus,
+            textarea:focus {
+                border-color: #45a049;
+                outline: none; 
+            }
+
+        button {
+            background-color: #45a049;
+            color: white; 
+            padding: 10px 15px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 16px; 
+        }
+
+            button:hover {
+                background-color: #45a049;
+            }
+
+        #progressContainer {
+            width: 50%;
+            background-color: #e0e0e0; 
+            border-radius: 4px;
+            display: none; 
+            margin: 15px auto; 
+            height: 10px; 
+        }
+
+        #progressBar {
+            width: 0; 
+            height: 100%; 
+            background-color: #45a049;
+            border-radius: 4px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Event</h1>
+    <form id="eventForm" method="post" action="/Home/AddEvents">
+        <label for="eventname">Event Name:</label>
+        <input type="text" id="eventname" name="eventname" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required>
+
+        <label for="eventdate">Event Date:</label>
+        <input type="date" id="eventdate" name="eventdate" required>
+
+        <button type="submit">Add Event</button>
+    </form>
+
+    <div id="progressContainer">
+        <div id="progressBar"></div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#eventForm').on('submit', function (event) {
+                event.preventDefault();
+                showProgress();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        setTimeout(function () {
+                            window.location.href = '/Home/Index';
+                        }, 300);
+                    },
+                    error: function () {
+                        alert('An error occurred while adding the event.');
+                    }
+                });
+            });
+        });
+
+        function showProgress() {
+            const progressContainer = $('#progressContainer');
+            const progressBar = $('#progressBar');
+
+            progressContainer.show();
+
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width++;
+                    progressBar.css('width', width + '%');
+                }
+            }, 10);
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,157 @@
+﻿@model List<Prop_Poe.Models.EventModel>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+    }
+
+    .search-form {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .search-form label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .search-form select,
+        .search-form button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .search-form button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .search-form button:hover {
+                background-color: #45a049;
+            }
+
+    .event-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .event-table th,
+        .event-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .event-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+    .event-item:hover {
+        background-color: #f1f1f1;
+    }
+
+    .no-events {
+        color: #ff0000;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .back-button {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 15px;
+        background-color: #45a049;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-align: center;
+        text-decoration: none;
+    }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+
+<h2>Events</h2>
+
+<form class="search-form" method="get" action="@Url.Action("Events")">
+    <label for="searchCategory">Category:</label>
+    <select id="searchCategory" name="searchCategory">
+        <option value="">All Categories</option>
+        @if (ViewBag.UniqueCategories != null)
+        {
+            foreach (var category in ViewBag.UniqueCategories as HashSet<string>)
+            {
+                <option value="@category">@category</option>
+            }
+        }
+    </select>
+
+    <label for="searchDate">Date:</label>
+    <select id="searchDate" name="searchDate">
+        <option value="">All Dates</option>
+        @if (ViewBag.UniqueDates != null)
+        {
+            foreach (var date in ViewBag.UniqueDates as HashSet<DateTime>)
+            {
+                <option value="@date.ToString("yyyy-MM-dd")">@date.ToString("MM/dd/yyyy")</option>
+            }
+        }
+    </select>
+
+
+    <button type="submit">Search</button>
+</form>
+
+<a href="@Url.Action("Index", "Home")" class="back-button">Back to Home Page</a>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="event-table">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var eventItem in Model)
+            {
+                <tr class="event-item">
+                    <td>@eventItem.EventName</td>
+                    <td>@eventItem.Description</td>
+                    <td>@eventItem.Category</td>
+                    <td>@eventItem.EventDate.ToString("MM/dd/yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="no-events">No events available.</p>
+}
