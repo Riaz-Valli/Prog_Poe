@@ -91,58 +91,52 @@
         font-size: 16px;
         cursor: pointer;
         transition: background-color 0.3s;
-        text-align: center;
-        text-decoration: none;
     }
 
         .back-button:hover {
-            background-color: #4CAF50;
+            background-color: #45a049;
         }
 </style>
 
-<h2>Events and Announcements</h2>
+<h2>Events</h2>
 
-<form class="search-form" method="get" action="@Url.Action("Events")">
-    <label for="searchCategory">Category:</label>
-    <select id="searchCategory" name="searchCategory">
-        <option value="">All Categories</option>
-        @if (ViewBag.UniqueCategories != null)
-        {
-            foreach (var category in ViewBag.UniqueCategories as HashSet<string>)
+<div class="search-form">
+    <form asp-action="Events" method="get">
+        <label for="searchCategory">Category:</label>
+        <select id="searchCategory" name="searchCategory">
+            <option value="">--Select Category--</option>
+            @foreach (var category in ViewBag.UniqueCategories)
             {
                 <option value="@category">@category</option>
             }
-        }
-    </select>
+        </select>
 
-    <label for="searchDate">Date:</label>
-    <select id="searchDate" name="searchDate">
-        <option value="">All Dates</option>
-        @if (ViewBag.UniqueDates != null)
-        {
-            foreach (var date in ViewBag.UniqueDates as HashSet<DateTime>)
+        <label for="searchDate">Date:</label>
+        <select id="searchDate" name="searchDate">
+            <option value="">--Select Date--</option>
+            @foreach (var date in ViewBag.UniqueDates)
             {
-                <option value="@date.ToString("yyyy-MM-dd")">@date.ToString("MM/dd/yyyy")</option>
+                <option value="@date.ToString("yyyy-MM-dd")">@date.ToShortDateString()</option>
             }
-        }
-    </select>
+        </select>
 
-    <button type="submit">Search</button>
-</form>
+        <button type="submit">Search</button>
+    </form>
+</div>
 
-<a href="@Url.Action("Index", "Home")" class="back-button">Back to Home Page</a>
-
-<!-- Events Section -->
-<h2>Events</h2>
-@if (Model.Item1 != null && Model.Item1.Count > 0)
+@if (Model.Item1.Count == 0)
+{
+    <div class="no-events">No events found for the selected criteria.</div>
+}
+else
 {
     <table class="event-table">
         <thead>
             <tr>
                 <th>Event Name</th>
-                <th>Description</th>
                 <th>Category</th>
                 <th>Date</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody>
@@ -150,9 +144,35 @@
             {
                 <tr class="event-item">
                     <td>@eventItem.EventName</td>
-                    <td>@eventItem.Description</td>
                     <td>@eventItem.Category</td>
-                    <td>@eventItem.EventDate.ToString("MM/dd/yyyy")</td>
+                    <td>@eventItem.EventDate.ToShortDateString()</td>
+                    <td>@eventItem.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (ViewBag.RecommendedEvents.Count > 0)
+{
+    <h2>Recommended Events</h2>
+    <table class="event-table">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var recommendedEvent in ViewBag.RecommendedEvents)
+            {
+                <tr class="event-item">
+                    <td>@recommendedEvent.EventName</td>
+                    <td>@recommendedEvent.Category</td>
+                    <td>@recommendedEvent.EventDate.ToShortDateString()</td>
+                    <td>@recommendedEvent.Description</td>
                 </tr>
             }
         </tbody>
@@ -160,19 +180,22 @@
 }
 else
 {
-    <p class="no-events">No events available.</p>
+    <div class="no-events">No recommended events available.</div>
 }
 
-<!-- Announcements Section -->
 <h2>Announcements</h2>
-@if (Model.Item2 != null && Model.Item2.Count > 0)
+@if (Model.Item2.Count == 0)
+{
+    <div class="no-announcements">No announcements available.</div>
+}
+else
 {
     <table class="announcement-table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Date</th>
+                <th>Announcement Name</th>
+                <th>Description</th>
+                <th>Date Posted</th>
             </tr>
         </thead>
         <tbody>
@@ -181,13 +204,11 @@ else
                 <tr class="announcement-item">
                     <td>@announcement.Name</td>
                     <td>@announcement.Description</td>
-                    <td>@announcement.DatePosted.ToString("MM/dd/yyyy")</td>
+                    <td>@announcement.DatePosted.ToShortDateString()</td>
                 </tr>
             }
         </tbody>
     </table>
 }
-else
-{
-    <p class="no-announcements">No announcements available.</p>
-}
+
+<a class="back-button" asp-action="Index">Back to Home</a>

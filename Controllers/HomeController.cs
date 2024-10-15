@@ -11,7 +11,8 @@ public class HomeController : Controller
     private static CustomLinkedList _customLinkedList = new CustomLinkedList();
     private static Dictionary<string, EventModel> _eventDictionary = new Dictionary<string, EventModel>();
     private static Dictionary<string, AnnouncementModel> _announcementDictionary = new Dictionary<string, AnnouncementModel>();
-    private static Dictionary<string, FeedbackModel> _feedbackDictionary = new Dictionary<string, FeedbackModel>(); 
+    private static Dictionary<string, FeedbackModel> _feedbackDictionary = new Dictionary<string, FeedbackModel>();
+    private static Dictionary<string, int> _categoryCount = new Dictionary<string, int>();
 
     public IActionResult Index()
     {
@@ -30,23 +31,22 @@ public class HomeController : Controller
 
     public IActionResult DisplayFeedback()
     {
-        var feedbackList = _feedbackDictionary.Values.ToList(); 
-        return View(feedbackList); 
+        var feedbackList = _feedbackDictionary.Values.ToList();
+        return View(feedbackList);
     }
-
 
     [HttpPost]
     public IActionResult SubmitFeedback(FeedbackModel model)
     {
         if (ModelState.IsValid)
         {
-            if (!_feedbackDictionary.ContainsKey(model.Email)) // Prevent duplicates based on email
+            if (!_feedbackDictionary.ContainsKey(model.Email)) 
             {
                 _feedbackDictionary[model.Email] = new FeedbackModel
                 {
                     Name = model.Name,
                     Email = model.Email,
-                    Feedback = model.Feedback // Correct spelling to 'Feedback'
+                    Feedback = model.Feedback /
                 };
 
                 TempData["SuccessMessage"] = "Feedback submitted successfully!";
@@ -66,9 +66,19 @@ public class HomeController : Controller
     {
         var eventDetailsList = _eventDictionary.Values.ToList();
 
-        // Filter by category
+        // Count selected categories
         if (!string.IsNullOrEmpty(searchCategory))
         {
+            if (_categoryCount.ContainsKey(searchCategory))
+            {
+                _categoryCount[searchCategory]++;
+            }
+            else
+            {
+                _categoryCount[searchCategory] = 1;
+            }
+
+            // Filter by selected category
             eventDetailsList = eventDetailsList
                 .Where(e => e.Category.Equals(searchCategory, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -82,15 +92,26 @@ public class HomeController : Controller
                 .ToList();
         }
 
+        // Find the most frequently selected category
+        var recommendedCategory = _categoryCount.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+
+        // Get recommended events from the most selected category
+        var recommendedEvents = string.IsNullOrEmpty(recommendedCategory)
+            ? new List<EventModel>()
+            : _eventDictionary.Values
+                .Where(e => e.Category.Equals(recommendedCategory, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
         var uniqueCategories = new HashSet<string>(eventDetailsList.Select(e => e.Category));
         var uniqueDates = new HashSet<DateTime>(eventDetailsList.Select(e => e.EventDate.Date));
 
         ViewBag.UniqueCategories = uniqueCategories;
         ViewBag.UniqueDates = uniqueDates;
 
-        // Pass announcements to the view
+        // Pass announcements and recommended events to the view
         var announcements = _announcementDictionary.Values.ToList();
         var model = new Tuple<List<EventModel>, List<AnnouncementModel>>(eventDetailsList, announcements);
+        ViewBag.RecommendedEvents = recommendedEvents; 
         return View(model);
     }
 
