@@ -1,4 +1,5 @@
-﻿@model List<Prop_Poe.Models.EventModel>
+﻿@model Tuple<List<Prop_Poe.Models.EventModel>, List<Prop_Poe.Models.AnnouncementModel>>
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -45,29 +46,35 @@
                 background-color: #45a049;
             }
 
-    .event-table {
+    .event-table,
+    .announcement-table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
     }
 
         .event-table th,
-        .event-table td {
+        .event-table td,
+        .announcement-table th,
+        .announcement-table td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
         }
 
-        .event-table th {
+        .event-table th,
+        .announcement-table th {
             background-color: #f2f2f2;
             font-weight: bold;
         }
 
-    .event-item:hover {
+    .event-item:hover,
+    .announcement-item:hover {
         background-color: #f1f1f1;
     }
 
-    .no-events {
+    .no-events,
+    .no-announcements {
         color: #ff0000;
         text-align: center;
         font-size: 16px;
@@ -77,7 +84,7 @@
         display: block;
         margin: 20px auto;
         padding: 10px 15px;
-        background-color: #45a049;
+        background-color: #4CAF50;
         color: white;
         border: none;
         border-radius: 5px;
@@ -89,12 +96,11 @@
     }
 
         .back-button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
         }
 </style>
 
-
-<h2>Events</h2>
+<h2>Events and Announcements</h2>
 
 <form class="search-form" method="get" action="@Url.Action("Events")">
     <label for="searchCategory">Category:</label>
@@ -121,13 +127,14 @@
         }
     </select>
 
-
     <button type="submit">Search</button>
 </form>
 
 <a href="@Url.Action("Index", "Home")" class="back-button">Back to Home Page</a>
 
-@if (Model != null && Model.Count > 0)
+<!-- Events Section -->
+<h2>Events</h2>
+@if (Model.Item1 != null && Model.Item1.Count > 0)
 {
     <table class="event-table">
         <thead>
@@ -139,7 +146,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var eventItem in Model)
+            @foreach (var eventItem in Model.Item1)
             {
                 <tr class="event-item">
                     <td>@eventItem.EventName</td>
@@ -154,4 +161,33 @@
 else
 {
     <p class="no-events">No events available.</p>
+}
+
+<!-- Announcements Section -->
+<h2>Announcements</h2>
+@if (Model.Item2 != null && Model.Item2.Count > 0)
+{
+    <table class="announcement-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var announcement in Model.Item2)
+            {
+                <tr class="announcement-item">
+                    <td>@announcement.Name</td>
+                    <td>@announcement.Description</td>
+                    <td>@announcement.DatePosted.ToString("MM/dd/yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="no-announcements">No announcements available.</p>
 }

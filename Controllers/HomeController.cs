@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Prop_Poe.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using System.Linq;
 
 public class HomeController : Controller
 {
     private static CustomLinkedList _customLinkedList = new CustomLinkedList();
     private static Dictionary<string, EventModel> _eventDictionary = new Dictionary<string, EventModel>();
+    private static Dictionary<string, AnnouncementModel> _announcementDictionary = new Dictionary<string, AnnouncementModel>();
+    private static Dictionary<string, FeedbackModel> _feedbackDictionary = new Dictionary<string, FeedbackModel>();
 
     public IActionResult Index()
     {
@@ -26,49 +28,69 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Events(string searchCategory, DateTime? searchDate)
+    public IActionResult DisplayFeedback()
     {
-        // Create a list to hold the event details
-        var eventDetailsList = new List<EventModel>();
-
-        // Check if the dictionary is not null and has entries
-        if (_eventDictionary != null && _eventDictionary.Count > 0)
-        {
-            // Iterate over the key-value pairs in the dictionary
-            foreach (var entry in _eventDictionary)
-            {
-                // Add the entry to the event details list
-                eventDetailsList.Add(entry.Value);
-            }
-
-            // Filter
-            if (!string.IsNullOrEmpty(searchCategory))
-            {
-                eventDetailsList = eventDetailsList
-                    .Where(e => e.Category.Equals(searchCategory, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            }
-
-            if (searchDate.HasValue)
-            {
-                eventDetailsList = eventDetailsList
-                    .Where(e => e.EventDate.Date == searchDate.Value.Date)
-                    .ToList();
-            }
-
-            // Create sets for unique categories and dates
-            var uniqueCategories = new HashSet<string>(eventDetailsList.Select(e => e.Category));
-            var uniqueDates = new HashSet<DateTime>(eventDetailsList.Select(e => e.EventDate.Date));
-
-            ViewBag.UniqueCategories = uniqueCategories;
-            ViewBag.UniqueDates = uniqueDates;
-            return View(eventDetailsList);
-        }
-
-        TempData["ErrorMessage"] = "No events found.";
-        return View(eventDetailsList);
+        var feedbackList = _feedbackDictionary.Values.ToList();
+        return View(feedbackList);
     }
 
+    [HttpPost]
+    public IActionResult SubmitFeedback(FeedbackModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            if (!_feedbackDictionary.ContainsKey(model.Email))
+            {
+                _feedbackDictionary[model.Email] = new FeedbackModel
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Feedback = model.Feedback
+                };
+
+                TempData["SuccessMessage"] = "Feedback submitted successfully!";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Feedback from this email already exists.";
+            }
+        }
+
+        TempData["ErrorMessage"] = "Failed to submit feedback. Ensure all fields are filled.";
+        return View(model);
+    }
+
+    public IActionResult Events(string searchCategory, DateTime? searchDate)
+    {
+        var eventDetailsList = _eventDictionary.Values.ToList();
+
+        // Filter by category
+        if (!string.IsNullOrEmpty(searchCategory))
+        {
+            eventDetailsList = eventDetailsList
+                .Where(e => e.Category.Equals(searchCategory, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        // Filter by date
+        if (searchDate.HasValue)
+        {
+            eventDetailsList = eventDetailsList
+                .Where(e => e.EventDate.Date == searchDate.Value.Date)
+                .ToList();
+        }
+
+        var uniqueCategories = new HashSet<string>(eventDetailsList.Select(e => e.Category));
+        var uniqueDates = new HashSet<DateTime>(eventDetailsList.Select(e => e.EventDate.Date));
+
+        ViewBag.UniqueCategories = uniqueCategories;
+        ViewBag.UniqueDates = uniqueDates;
+
+        var announcements = _announcementDictionary.Values.ToList();
+        var model = new Tuple<List<EventModel>, List<AnnouncementModel>>(eventDetailsList, announcements);
+        return View(model);
+    }
 
     [HttpGet]
     public IActionResult AddEvents()
@@ -76,50 +98,55 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpPost]
     public IActionResult AddEvents(EventModel model)
     {
         if (ModelState.IsValid)
         {
-            // Retrieve values from the model
-            string eventName = model.EventName;
-            string description = model.Description;
-            DateTime eventDate = model.EventDate;
-            string category = model.Category;
-
-            // Create the EventModel object
-            var eventModel = new EventModel
-            {
-                EventName = eventName,
-                Description = description,
-                EventDate = eventDate,
-                Category = category
-            };
-
-            // Add the new event entry to the dictionary
-            _eventDictionary[eventName] = eventModel; 
-
-            var customHashtable = new CustomHashtable();
-            foreach (var entry in _eventDictionary)
-            {
-                // Create composite keys
-                string compositeKey = $"{entry.Value.Description}|{entry.Value.Category}@{entry.Value.EventDate}";
-                customHashtable.Add(entry.Key, compositeKey);
-            }
-
-            // Store the updated hashtable back in session
-            HttpContext.Session.SetObject("CustomHashtable", customHashtable);
-
+            _eventDictionary[model.EventName] = model;
             TempData["SuccessMessage"] = "Event added successfully!";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         TempData["ErrorMessage"] = "Failed to add the event.";
         return View(model);
     }
 
+    [HttpGet]
+    public IActionResult AddAnnouncement()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult AddAnnouncement(AnnouncementModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            if (!_announcementDictionary.ContainsKey(model.Name))
+            {
+                _announcementDictionary[model.Name] = new AnnouncementModel
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    DatePosted = DateTime.Now
+                };
+
+                TempData["SuccessMessage"] = "Announcement added successfully!";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "An announcement with this name already exists.";
+            }
+        }
+
+        TempData["ErrorMessage"] = "Failed to add the announcement. Ensure all fields are filled.";
+        return View(model);
+    }
+
     public IActionResult AllReports()
     {
-        // Fetch reports from the custom linked list
         var reports = _customLinkedList.GetAllReports();
         return View(reports);
     }
@@ -127,14 +154,12 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult SubmitReport(IFormFile attachment, string location, string category, string description)
     {
-        // Ensure all required fields are provided
         if (string.IsNullOrEmpty(location) || string.IsNullOrEmpty(category) || string.IsNullOrEmpty(description))
         {
             TempData["ErrorMessage"] = "All fields are required!";
-            return RedirectToAction("Report");
+            return RedirectToAction(nameof(Report));
         }
 
-        // Create a new report
         var report = new Report
         {
             Location = location,
@@ -147,22 +172,18 @@ public class HomeController : Controller
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".pdf" };
             var fileExtension = Path.GetExtension(attachment.FileName).ToLower();
 
-            if (!Array.Exists(allowedExtensions, ext => ext == fileExtension))
+            if (!allowedExtensions.Contains(fileExtension))
             {
                 TempData["ErrorMessage"] = "Invalid file type. Only .jpg, .jpeg, .png, and .pdf are allowed.";
-                return RedirectToAction("Report");
+                return RedirectToAction(nameof(Report));
             }
 
-            // Get the path for the uploads directory
             var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
-
-            // Check if the uploads directory exists, if not create it
             if (!Directory.Exists(uploadsPath))
             {
                 Directory.CreateDirectory(uploadsPath);
             }
 
-            // Save the file
             var fileName = Path.GetFileName(attachment.FileName);
             var filePath = Path.Combine(uploadsPath, fileName);
 
@@ -171,20 +192,11 @@ public class HomeController : Controller
                 attachment.CopyTo(stream);
             }
 
-            // Set the attachment URL
             report.Attachment = $"/uploads/{fileName}";
         }
-        else
-        {
-            // No attachment, set the Attachment property to null
-            report.Attachment = null;
-        }
 
-        // Add the report to the custom linked list
         _customLinkedList.Add(report);
-
-        // Redirect to the Report view with a success message
         TempData["SuccessMessage"] = "Report submitted successfully!";
-        return RedirectToAction("Report");
+        return RedirectToAction(nameof(Report));
     }
 }

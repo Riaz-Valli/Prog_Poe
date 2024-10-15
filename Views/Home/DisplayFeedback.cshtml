@@ -1,0 +1,67 @@
+﻿@model List<Prop_Poe.Models.FeedbackModel>
+
+@{
+    ViewBag.Title = "Feedback List";
+}
+
+<h2>Feedback List</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var feedback in Model)
+        {
+            <tr>
+                <td>@feedback.Name</td>
+                <td>@feedback.Email</td>
+                <td>@feedback.Feedback</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="button-container">
+    <button onclick="window.location.href='@Url.Action("Index", "Home")'" class="back-button">Back to Home Page</button>
+</div>
+
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+        font-size: 18px;
+        text-align: left;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #dddddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .button-container {
+        margin-top: 20px;
+    }
+
+    .back-button {
+        padding: 10px 20px;
+        background-color: #218838;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .back-button:hover {
+            background-color: #218838;
+        }
+</style>

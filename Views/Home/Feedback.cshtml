@@ -1,6 +1,4 @@
-﻿<!--Topic: CSS-->
-<!--https://www.w3schools.com/css/ -->
-@model Report
+﻿@model FeedbackModel
 
 @using (Html.BeginForm("SubmitFeedback", "Home", FormMethod.Post, new { id = "feedbackForm" }))
 {
@@ -114,42 +112,32 @@
 
     .progress-message {
         text-align: center;
-        margin-top: 0.5rem;
-        font-size: 1rem;
-        color: #333;
+        color: #28a745;
     }
 </style>
 
 <script>
     function handleSubmit(event) {
-        event.preventDefault();
+        const form = document.getElementById('feedbackForm');
+        const progressBar = document.getElementById('progressBar');
+        const progressMessage = document.getElementById('progressMessage');
 
-        var name = document.getElementById('name').value.trim();
-        var email = document.getElementById('email').value.trim();
-        var feedback = document.getElementById('feedback').value.trim();
+        progressBar.style.width = '0%';
+        progressMessage.textContent = '';
 
-        var progressBar = document.getElementById('progressBar');
-        var progressMessage = document.getElementById('progressMessage');
+        event.preventDefault(); // Prevent the default form submission
 
-        if (!name || !email || !feedback) {
-            progressMessage.textContent = 'Please fill in all required fields.';
-            progressBar.style.width = '0%';
-            return;
-        }
-
-        progressMessage.textContent = 'Submitting feedback...';
-
-        var width = 0;
-        var interval = setInterval(function () {
-            if (width >= 100) {
+        // Simulate progress
+        let progress = 0;
+        const interval = setInterval(() => {
+            if (progress >= 100) {
                 clearInterval(interval);
-                progressMessage.textContent = 'Feedback submitted successfully!';
-                progressBar.style.width = '100%';
-                document.getElementById('feedbackForm').reset();
+                form.submit(); // Submit the form after progress reaches 100%
             } else {
-                width++;
-                progressBar.style.width = width + '%';
+                progress += 10;
+                progressBar.style.width = progress + '%';
+                progressMessage.textContent = 'Submitting... ' + progress + '%';
             }
-        }, 10);
+        }, 100); // Update progress every 100ms
     }
 </script>
