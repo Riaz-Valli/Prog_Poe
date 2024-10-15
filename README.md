@@ -41,20 +41,47 @@ with the following columns:
 
 There is a button at the top of the view:
 
-- Back to Home Page: Takes you back to the Home Page.
+Back to Home Page: Takes you back to the Home Page.
 
 Feedback View
 
 This pages allows users to give feedback on the app. User fill in the required information such
 as:
 
--Name
--Email
--Feedback
+- Name
+- Email
+- Feedback
 
 This page contains 2 buttons: 
--Submit Feedback: Sends your feedback.
--Back to home page: Takes you to the home page.
+- Submit Feedback: Sends your feedback.
+- Back to home page: Takes you to the home page.
+
+Display Feedback View
+
+Here users can see all the feedback submitted by all the users.
+
+Add Events View
+
+Here users can add upcoming events and users.
+
+Events details include:
+- Event Name
+- Date
+- Description
+- Category
+
+Announcement details include:
+- Name
+- Description
+- Date
+
+Click the relevant button to add the event or announcement
+
+View Events
+
+- Here users can see Events and Announcemnts displayed in a table format. 
+- Each one has its own table.
+- Users can search for events based on category or date.
 
 Required
 Visual Studio
