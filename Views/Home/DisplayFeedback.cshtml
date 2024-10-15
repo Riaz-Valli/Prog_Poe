@@ -5,25 +5,33 @@
 }
 
 <h2>Feedback List</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Feedback</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var feedback in Model)
-        {
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@feedback.Name</td>
-                <td>@feedback.Email</td>
-                <td>@feedback.Feedback</td>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Feedback</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var feedback in Model)
+            {
+                <tr>
+                    <td>@feedback.Name</td>
+                    <td>@feedback.Email</td>
+                    <td>@feedback.Feedback</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No feedback to display</p>
+}
 
 <div class="button-container">
     <button onclick="window.location.href='@Url.Action("Index", "Home")'" class="back-button">Back to Home Page</button>
@@ -62,6 +70,6 @@
     }
 
         .back-button:hover {
-            background-color: #218838;
+            background-color: #19692c;
         }
 </style>

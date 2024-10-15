@@ -125,14 +125,14 @@
         progressBar.style.width = '0%';
         progressMessage.textContent = '';
 
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault(); 
 
         // Simulate progress
         let progress = 0;
         const interval = setInterval(() => {
             if (progress >= 100) {
                 clearInterval(interval);
-                form.submit(); // Submit the form after progress reaches 100%
+                form.submit(); 
             } else {
                 progress += 10;
                 progressBar.style.width = progress + '%';
