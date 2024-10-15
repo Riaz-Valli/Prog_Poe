@@ -77,6 +77,12 @@ Announcement details include:
 
 Click the relevant button to add the event or announcement
 
+View Events
+
+Here users can see Events and Announcemnts displayed in a table format. 
+Each one has its own table.
+Users can search for events based on category or date.
+
 Required
 Visual Studio
 
