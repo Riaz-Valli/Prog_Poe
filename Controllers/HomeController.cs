@@ -46,7 +46,7 @@ public class HomeController : Controller
                 {
                     Name = model.Name,
                     Email = model.Email,
-                    Feedback = model.Feedback /
+                    Feedback = model.Feedback 
                 };
 
                 TempData["SuccessMessage"] = "Feedback submitted successfully!";
