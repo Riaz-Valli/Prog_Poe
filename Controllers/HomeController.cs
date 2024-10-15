@@ -1,3 +1,11 @@
+// Resources/ References
+//Topic: dictionary
+//Available at : https://www.geeksforgeeks.org/c-sharp-dictionary-with-examples/
+//Topic: sets
+//Available at : https://www.geeksforgeeks.org/introduction-to-set-data-structure/
+//Topic: linked list
+//Available at : https://www.geeksforgeeks.org/introduction-to-linked-list-data-structure/
+
 using Microsoft.AspNetCore.Mvc;
 using Prop_Poe.Models;
 using System;
