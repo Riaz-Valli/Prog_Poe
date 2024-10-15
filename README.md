@@ -82,6 +82,15 @@ View Events
 - Here users can see Events and Announcemnts displayed in a table format. 
 - Each one has its own table.
 - Users can search for events based on category or date.
+- User will see reommended events based of their search history. The events from the most searched category will be recommend to the user.
+
+Data structures 
+
+- Dictionaries:  _eventDictionary, _announcementDictionary, _feedbackDictionary: Hold items with unique keys so we can find them quickly and avoid duplicates.
+- _categoryCount: Counts how many times each category is picked to find the most popular one easily. This is used for event recommendations.
+- Sets:uniqueCategories, uniqueDates: Collect unique categories and dates from events automatically, which helps create dropdowns in the view without duplicates.
+  Using dictionaries and sets helps manage data faster and keeps it organized.
+- No use of queues because the code requires quick access to data using unique keys, which is better handled by dictionaries.
 
 Required
 Visual Studio
