@@ -11,7 +11,7 @@ public class HomeController : Controller
     private static CustomLinkedList _customLinkedList = new CustomLinkedList();
     private static Dictionary<string, EventModel> _eventDictionary = new Dictionary<string, EventModel>();
     private static Dictionary<string, AnnouncementModel> _announcementDictionary = new Dictionary<string, AnnouncementModel>();
-    private static Dictionary<string, FeedbackModel> _feedbackDictionary = new Dictionary<string, FeedbackModel>();
+    private static Dictionary<string, FeedbackModel> _feedbackDictionary = new Dictionary<string, FeedbackModel>(); 
 
     public IActionResult Index()
     {
@@ -30,22 +30,23 @@ public class HomeController : Controller
 
     public IActionResult DisplayFeedback()
     {
-        var feedbackList = _feedbackDictionary.Values.ToList();
-        return View(feedbackList);
+        var feedbackList = _feedbackDictionary.Values.ToList(); 
+        return View(feedbackList); 
     }
+
 
     [HttpPost]
     public IActionResult SubmitFeedback(FeedbackModel model)
     {
         if (ModelState.IsValid)
         {
-            if (!_feedbackDictionary.ContainsKey(model.Email))
+            if (!_feedbackDictionary.ContainsKey(model.Email)) // Prevent duplicates based on email
             {
                 _feedbackDictionary[model.Email] = new FeedbackModel
                 {
                     Name = model.Name,
                     Email = model.Email,
-                    Feedback = model.Feedback
+                    Feedback = model.Feedback // Correct spelling to 'Feedback'
                 };
 
                 TempData["SuccessMessage"] = "Feedback submitted successfully!";
@@ -87,6 +88,7 @@ public class HomeController : Controller
         ViewBag.UniqueCategories = uniqueCategories;
         ViewBag.UniqueDates = uniqueDates;
 
+        // Pass announcements to the view
         var announcements = _announcementDictionary.Values.ToList();
         var model = new Tuple<List<EventModel>, List<AnnouncementModel>>(eventDetailsList, announcements);
         return View(model);
@@ -123,7 +125,7 @@ public class HomeController : Controller
     {
         if (ModelState.IsValid)
         {
-            if (!_announcementDictionary.ContainsKey(model.Name))
+            if (!_announcementDictionary.ContainsKey(model.Name)) // Prevent duplicates
             {
                 _announcementDictionary[model.Name] = new AnnouncementModel
                 {

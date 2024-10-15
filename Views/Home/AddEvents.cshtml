@@ -84,6 +84,41 @@
         .error {
             color: red;
         }
+
+        .progress {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #28a745;
+            border-radius: 5px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-message {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+            .back-button button {
+                background-color: #28a745;
+            }
+
+                .back-button button:hover {
+                    background-color: #28a745;
+                }
     </style>
 </head>
 <body>
@@ -106,6 +141,12 @@
             <input type="date" id="eventdate" name="eventdate" required>
 
             <button type="submit">Add Event</button>
+
+            <!-- Progress bar -->
+            <div class="progress">
+                <div class="progress-bar" id="eventProgressBar"></div>
+            </div>
+            <p id="eventProgressMessage" class="progress-message"></p>
         </form>
 
         <!-- Announcement Section -->
@@ -118,7 +159,18 @@
             <textarea id="description" name="description" rows="4" required></textarea>
 
             <button type="submit">Add Announcement</button>
+
+            <!-- Progress bar -->
+            <div class="progress">
+                <div class="progress-bar" id="announcementProgressBar"></div>
+            </div>
+            <p id="announcementProgressMessage" class="progress-message"></p>
         </form>
+
+        <!-- Back to Home Button -->
+        <div class="back-button">
+            <button onclick="window.location.href='/Home/Index';">Back to Home</button>
+        </div>
     </section>
 
     <!-- Messages -->
@@ -126,40 +178,46 @@
     <div id="message" class="error"></div>
 
     <script>
+        function startProgressBar(formId, progressBarId, progressMessageId, ajaxUrl) {
+            var progressBar = document.getElementById(progressBarId);
+            var progressMessage = document.getElementById(progressMessageId);
+
+            progressMessage.textContent = 'Submitting...';
+            var width = 0;
+            var interval = setInterval(function () {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    progressMessage.textContent = 'Submission successful!';
+                    setTimeout(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: ajaxUrl,
+                            data: $('#' + formId).serialize(),
+                            success: function (response) {
+                                $('#' + formId)[0].reset();
+                                progressMessage.textContent = response.message;
+                            },
+                            error: function (xhr) {
+                                progressMessage.textContent = xhr.responseJSON.message;
+                            }
+                        });
+                    }, 500);
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                }
+            }, 10);
+        }
+
         $(document).ready(function () {
             $('#eventForm').on('submit', function (e) {
-                e.preventDefault(); 
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/Home/AddEvents',
-                    data: $(this).serialize(),
-                    success: function (response) {
-                        $('#message').removeClass('error').addClass('success').text(response.message).show();
-                        $('#eventForm')[0].reset();
-                    },
-                    error: function (xhr) {
-                        $('#message').removeClass('success').addClass('error').text(xhr.responseJSON.message).show();
-                    }
-                });
+                e.preventDefault();
+                startProgressBar('eventForm', 'eventProgressBar', 'eventProgressMessage', '/Home/AddEvents');
             });
 
-           
             $('#announcementForm').on('submit', function (e) {
-                e.preventDefault(); 
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/Home/AddAnnouncement',
-                    data: $(this).serialize(),
-                    success: function (response) {
-                        $('#message').removeClass('error').addClass('success').text(response.message).show();
-                        $('#announcementForm')[0].reset();
-                    },
-                    error: function (xhr) {
-                        $('#message').removeClass('success').addClass('error').text(xhr.responseJSON.message).show();
-                    }
-                });
+                e.preventDefault();
+                startProgressBar('announcementForm', 'announcementProgressBar', 'announcementProgressMessage', '/Home/AddAnnouncement');
             });
         });
     </script>
