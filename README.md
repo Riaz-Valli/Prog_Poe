@@ -60,20 +60,20 @@ Display Feedback View
 
 Here users can see all the feedback submitted by all the users.
 
-AddEvents
+Add Events View
 
 Here users can add upcoming events and users.
 
 Events details include:
-Event Name
-Date
-Description
-Category
+-Event Name
+-Date
+-Description
+-Category
 
 Announcement details include:
-Name
-Description
-Date
+-Name
+-Description
+-Date
 
 Click the relevant button to add the event or announcement
 
