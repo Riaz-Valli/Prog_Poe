@@ -78,13 +78,14 @@ Index.cshtml
         <button class="btn btn-green" onclick="location.href='@Url.Action("Feedback")'">Give Feedback</button> 
         <button class="btn btn-green" onclick="location.href='@Url.Action("DisplayFeedback")'">View user Feedback</button>
         <button class="btn btn-green" onclick="location.href='@Url.Action("Events")'">Events and Announcements</button>
-        <button class="btn btn-disabled" onclick="showComingSoon()">Service Request Status</button>
+        <button class="btn btn-green" onclick="location.href='@Url.Action("SubmitRequest", "ServiceRequest")'">Submit a Request</button>
+        <button class="btn btn-green" onclick="location.href='@Url.Action("Request", "ServiceRequest")'">View Requests</button>
     </div>
 
-    <script>
+    @* <script>
         function showComingSoon() {
             alert('Coming Soon');
         }
-    </script>
+    </script> *@
 </body>
 </html>
