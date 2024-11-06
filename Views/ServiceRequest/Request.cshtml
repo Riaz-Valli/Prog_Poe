@@ -1,33 +1,49 @@
 ﻿@model IEnumerable<ServiceRequestModel>
 
 <h2>Service Request Status</h2>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Requester Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Submission Date</th>
-     @*        <th>Actions</th> *@
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var request in Model)
-        {
+
+<!-- Search form -->
+<form method="get" asp-action="Request" class="search-form">
+    <input type="text" name="searchQuery" placeholder="Search by name, description, or category" />
+    <button type="submit">Search</button>
+</form>
+
+@if (Model != null && !Model.Any())
+{
+    <p>No service requests found matching your search criteria.</p>
+}
+else
+{
+    <table>
+        <thead>
             <tr>
-                <td>@request.Id</td>
-                <td>@request.RequesterName</td>
-                <td>@request.Description</td>
-                <td>@request.Status</td>
-                <td>@request.SubmissionDate.ToString("yyyy-MM-dd")</td>
-               @*  <td>
-                    <a href="@Url.Action("Details", "ServiceRequest", new { id = request.Id })">Details</a>
-                </td> *@
+                <th>ID</th>
+                <th>Requester Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Submission Date</th>
+                <th>Assigned To</th>
+                <th>Document</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var request in Model)
+            {
+                <tr>
+                    <td>@request.Id</td>
+                    <td>@request.RequesterName</td>
+                    <td>@request.Description</td>
+                    <td>@request.Category</td>
+                    <td>@request.Status</td>
+                    <td>@request.SubmissionDate.ToString("yyyy-MM-dd")</td>
+                    <td>@request.AssignedTo</td>
+                    <td>@request.Document</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <button onclick="location.href='@Url.Action("Index", "Home")'" class="btn-back">Back to Home</button>
 

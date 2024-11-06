@@ -2,36 +2,53 @@
 
 <h2>Submit a Service Request</h2>
 
-<form asp-action="SubmitRequest" method="post">
+<form asp-action="SubmitRequest" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="RequesterName">Name</label>
         <input type="text" id="RequesterName" name="RequesterName" required />
     </div>
+
     <div class="form-group">
         <label for="Description">Description</label>
         <textarea id="Description" name="Description" required></textarea>
     </div>
-    @* <div class="form-group">
-        <label for="Status">Status</label>
-        <select id="Status" name="Status">
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-        </select>
-    </div> *@
+
+    <div class="form-group">
+        <label>Category</label><br>
+        <label>
+            <input type="radio" name="Category" value="Technical" required> Technical
+        </label><br>
+        <label>
+            <input type="radio" name="Category" value="Non-Technical" required> Non-Technical
+        </label><br>
+        <label>
+            <input type="radio" name="Category" value="Maintenance" required> Maintenance
+        </label><br>
+        <label>
+            <input type="radio" name="Category" value="Other" required> Other
+        </label>
+    </div>
+
+
+    <div class="form-group">
+        <label for="Document">Upload Document</label>
+        <input type="file" id="Document" name="Document" accept=".pdf, .doc, .docx, .txt" />
+    </div>
+
     <button type="submit" class="btn-submit">Submit</button>
 </form>
+
 <button onclick="location.href='@Url.Action("Index", "Home")'" class="btn-back">Back to Home</button>
 
 <style>
     body {
         font-family: Arial, sans-serif;
         margin: 20px;
-        background-color: #f9f9f9; 
+        background-color: #f9f9f9;
     }
 
     h2 {
-        color: #4CAF50; 
+        color: #4CAF50;
         text-align: center;
         margin-bottom: 20px;
     }
@@ -44,25 +61,26 @@
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
-        color: #388E3C; 
+        color: #388E3C;
     }
 
     input[type="text"],
     textarea,
-    select {
+    select,
+    input[type="file"] {
         width: 100%;
         padding: 10px;
-        border: 1px solid #4CAF50; 
+        border: 1px solid #4CAF50;
         border-radius: 4px;
-        box-sizing: border-box; 
+        box-sizing: border-box;
     }
 
     textarea {
-        resize: vertical; 
+        resize: vertical;
     }
 
     button.btn-submit {
-        background-color: #4CAF50; 
+        background-color: #4CAF50;
         color: white;
         padding: 10px 15px;
         border: none;
@@ -71,18 +89,18 @@
         font-size: 16px;
         margin-top: 10px;
         display: block;
-        width: 100%; 
+        width: 100%;
     }
 
         button.btn-submit:hover {
-            background-color: #45a049; 
+            background-color: #45a049;
         }
 
     button.btn-back {
         display: block;
         margin: 20px auto;
         padding: 10px 15px;
-        background-color: #4CAF50; 
+        background-color: #4CAF50;
         color: white;
         border: none;
         border-radius: 4px;
@@ -93,6 +111,6 @@
     }
 
         button.btn-back:hover {
-            background-color: #45a049; 
+            background-color: #45a049;
         }
 </style>
