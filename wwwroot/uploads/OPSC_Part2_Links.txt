@@ -1,0 +1,3 @@
+Demonstration video: https://youtu.be/q847V5nVNnQ 
+GitHub Repo: https://github.com/ST10083156/OPSC_QuizCore.git 
+API Link: https://github.com/ST10083156/OPSC_API.git

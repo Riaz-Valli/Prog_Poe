@@ -70,7 +70,7 @@ public class HomeController : Controller
         return View(model);
     }
 
-    public IActionResult Events(string searchCategory, DateTime? searchDate)
+    public IActionResult Events(string searchCategory, DateTime? searchDate, string searchText)
     {
         var eventDetailsList = _eventDictionary.Values.ToList();
 
@@ -100,6 +100,15 @@ public class HomeController : Controller
                 .ToList();
         }
 
+        // Text-based search (filter by name or description)
+        if (!string.IsNullOrEmpty(searchText))
+        {
+            eventDetailsList = eventDetailsList
+                .Where(e => e.EventName.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                            e.Description.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
         // Find the most frequently selected category
         var recommendedCategory = _categoryCount.OrderByDescending(x => x.Value).FirstOrDefault().Key;
 
@@ -119,9 +128,11 @@ public class HomeController : Controller
         // Pass announcements and recommended events to the view
         var announcements = _announcementDictionary.Values.ToList();
         var model = new Tuple<List<EventModel>, List<AnnouncementModel>>(eventDetailsList, announcements);
-        ViewBag.RecommendedEvents = recommendedEvents; 
+        ViewBag.RecommendedEvents = recommendedEvents;
+
         return View(model);
     }
+
 
     [HttpGet]
     public IActionResult AddEvents()
