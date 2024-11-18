@@ -4,8 +4,8 @@
 
 <!-- Search form -->
 <form method="get" asp-action="Request" class="search-form">
-    <input type="text" name="searchQuery" placeholder="Search by name, description, or category" />
-    <button type="submit">Search</button>
+    <input type="text" name="searchQuery" placeholder="Search by name, description, or category" class="search-input" />
+    <button type="submit" class="search-button">Search</button>
 </form>
 
 @if (Model != null && !Model.Any())
@@ -14,35 +14,37 @@
 }
 else
 {
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Requester Name</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Submission Date</th>
-                <th>Assigned To</th>
-                <th>Document</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var request in Model)
-            {
+    <div class="table-container">
+        <table>
+            <thead>
                 <tr>
-                    <td>@request.Id</td>
-                    <td>@request.RequesterName</td>
-                    <td>@request.Description</td>
-                    <td>@request.Category</td>
-                    <td>@request.Status</td>
-                    <td>@request.SubmissionDate.ToString("yyyy-MM-dd")</td>
-                    <td>@request.AssignedTo</td>
-                    <td>@request.Document</td>
+                    <th>ID</th>
+                    <th>Requester Name</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Submission Date</th>
+                    <th>Assigned To</th>
+                    <th>Document</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <td>@request.Id</td>
+                        <td>@request.RequesterName</td>
+                        <td>@request.Description</td>
+                        <td>@request.Category</td>
+                        <td>@request.Status</td>
+                        <td>@request.SubmissionDate.ToString("yyyy-MM-dd")</td>
+                        <td>@request.AssignedTo</td>
+                        <td>@request.Document</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 <button onclick="location.href='@Url.Action("Index", "Home")'" class="btn-back">Back to Home</button>
@@ -51,24 +53,63 @@ else
     body {
         font-family: Arial, sans-serif;
         margin: 20px;
-        color: black; 
+        background-color: #f9f9f9;
+        color: black;
     }
 
     h2 {
-        color: black; 
+        color: black;
         text-align: center;
         margin-bottom: 20px;
+    }
+
+    .search-form {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .search-input {
+        padding: 10px;
+        border: 1px solid #4CAF50;
+        border-radius: 4px;
+        width: 300px;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .search-button {
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+        .search-button:hover {
+            background-color: #45a049;
+        }
+
+    .table-container {
+        max-width: 100%;
+        overflow-x: auto;
+        margin-top: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 20px;
     }
 
     th, td {
         border: 1px solid #4CAF50;
-        padding: 8px;
+        padding: 12px;
         text-align: left;
     }
 

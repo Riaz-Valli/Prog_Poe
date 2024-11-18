@@ -1,6 +1,4 @@
-﻿<!--Topic: CSS-->
-<!--https://www.w3schools.com/css/ -->
-@model Report
+﻿@model Report
 
 @using (Html.BeginForm("SubmitReport", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "reportForm" }))
 {
@@ -45,6 +43,7 @@
         background-position: center;
         background-repeat: no-repeat;
         height: 100vh;
+        font-family: Arial, sans-serif;
     }
 
     .form-container {
@@ -90,6 +89,9 @@
         border-radius: 5px;
         cursor: pointer;
         color: white;
+        width: 100%;
+        max-width: 200px;
+        text-align: center;
     }
 
     .submit-button {

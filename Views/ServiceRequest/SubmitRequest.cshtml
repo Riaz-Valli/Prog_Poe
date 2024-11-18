@@ -2,7 +2,7 @@
 
 <h2>Submit a Service Request</h2>
 
-<form asp-action="SubmitRequest" method="post" enctype="multipart/form-data">
+<form asp-action="SubmitRequest" method="post" enctype="multipart/form-data" class="service-request-form">
     <div class="form-group">
         <label for="RequesterName">Name</label>
         <input type="text" id="RequesterName" name="RequesterName" required />
@@ -14,28 +14,38 @@
     </div>
 
     <div class="form-group">
-        <label>Category</label><br>
-        <label>
-            <input type="radio" name="Category" value="Technical" required> Technical
-        </label><br>
-        <label>
-            <input type="radio" name="Category" value="Non-Technical" required> Non-Technical
-        </label><br>
-        <label>
-            <input type="radio" name="Category" value="Maintenance" required> Maintenance
-        </label><br>
-        <label>
-            <input type="radio" name="Category" value="Other" required> Other
-        </label>
+        <label>Category</label>
+        <div class="radio-group">
+            <label>
+                <input type="radio" name="Category" value="Technical" required> Technical
+            </label>
+            <label>
+                <input type="radio" name="Category" value="Non-Technical" required> Non-Technical
+            </label>
+            <label>
+                <input type="radio" name="Category" value="Maintenance" required> Maintenance
+            </label>
+            <label>
+                <input type="radio" name="Category" value="Other" required> Other
+            </label>
+        </div>
     </div>
 
     <div class="form-group">
         <label for="Document">Upload Document</label>
-        <input type="file" id="Document" name="Document" accept=".pdf, .doc, .docx, .txt" />
+        <input type="file" id="Document" name="Document" accept=".pdf, .doc, .docx, .txt" required />
     </div>
 
     <button type="submit" class="btn-submit">Submit</button>
 </form>
+
+<!-- Display the document upload status -->
+<div class="status-message">
+    @if (ViewBag.DocumentStatus != null)
+    {
+        <p><strong>File Upload Status:</strong> @ViewBag.DocumentStatus</p>
+    }
+</div>
 
 <button onclick="location.href='@Url.Action("Index", "Home")'" class="btn-back">Back to Home</button>
 
@@ -44,13 +54,22 @@
         font-family: Arial, sans-serif;
         margin: 20px;
         background-color: #f9f9f9;
-        color: black; 
+        color: black;
     }
 
     h2 {
-        color: black; 
+        color: black;
         text-align: center;
         margin-bottom: 20px;
+    }
+
+    .service-request-form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .form-group {
@@ -61,7 +80,7 @@
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
-        color: black; 
+        color: black;
     }
 
     input[type="text"],
@@ -73,10 +92,18 @@
         border: 1px solid #4CAF50;
         border-radius: 4px;
         box-sizing: border-box;
+        font-size: 14px;
     }
 
     textarea {
         resize: vertical;
+        min-height: 100px;
+    }
+
+    .radio-group label {
+        display: block;
+        font-weight: normal;
+        margin: 5px 0;
     }
 
     button.btn-submit {
@@ -87,9 +114,8 @@
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
-        margin-top: 10px;
-        display: block;
         width: 100%;
+        margin-top: 10px;
     }
 
         button.btn-submit:hover {
@@ -112,5 +138,17 @@
 
         button.btn-back:hover {
             background-color: #45a049;
+        }
+
+    .status-message {
+        text-align: center;
+        margin-top: 20px;
+        color: #333;
+        font-size: 16px;
+    }
+
+        .status-message p {
+            font-weight: bold;
+            color: #4CAF50;
         }
 </style>

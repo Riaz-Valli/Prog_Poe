@@ -76,4 +76,50 @@ public class ServiceRequestController : Controller
         var allRequests = _serviceRequestTree.GetAll(); // Get all requests from the tree
         return allRequests.Any() ? allRequests.Max(r => r.Id) + 1 : 1; // Generate ID based on the max ID
     }
+
+    [HttpPost]
+    public IActionResult UpdateRequestStatus(int id, string newStatus, string searchQuery)
+    {
+        // Fetch the request using the tree or heap
+        var request = _serviceRequestTree.Search(id);
+        if (request != null)
+        {
+            request.Status = newStatus; // Update the status
+            TempData["Message"] = $"Status updated for request ID {id} to {newStatus}.";
+        }
+        else
+        {
+            TempData["Error"] = $"Request ID {id} not found.";
+        }
+
+        // Redirect back to UpdateStatus, preserving the search query
+        return RedirectToAction("UpdateStatus", new { searchQuery });
+    }
+
+
+    public IActionResult UpdateStatus(string searchQuery)
+    {
+        var serviceRequests = _serviceRequestHeap.GetAll();
+        if (!string.IsNullOrEmpty(searchQuery))
+        {
+            serviceRequests = serviceRequests
+                .Where(r => r.RequesterName.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                            r.Description.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                            r.Category.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        // Create a dictionary for precomputing selected statuses
+        var statusDictionary = new Dictionary<int, string>();
+        foreach (var request in serviceRequests)
+        {
+            statusDictionary[request.Id] = request.Status;
+        }
+
+        ViewData["StatusDictionary"] = statusDictionary;
+
+        return View(serviceRequests);
+    }
+
+
 }

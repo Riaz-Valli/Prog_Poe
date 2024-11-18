@@ -8,7 +8,7 @@
 
 @if (Model != null && Model.Any())
 {
-    <table class="table">
+    <table class="feedback-table">
         <thead>
             <tr>
                 <th>Name</th>
@@ -19,7 +19,7 @@
         <tbody>
             @foreach (var feedback in Model)
             {
-                <tr>
+                <tr class="feedback-item">
                     <td>@feedback.Name</td>
                     <td>@feedback.Email</td>
                     <td>@feedback.Feedback</td>
@@ -30,7 +30,7 @@
 }
 else
 {
-    <p>No feedback to display</p>
+    <p class="no-feedback">No feedback to display</p>
 }
 
 <div class="button-container">
@@ -38,38 +38,63 @@ else
 </div>
 
 <style>
-    .table {
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+    }
+
+    .feedback-table {
         width: 100%;
         border-collapse: collapse;
-        margin: 1rem 0;
-        font-size: 18px;
-        text-align: left;
+        margin-top: 20px;
     }
 
-    th, td {
-        padding: 12px;
-        border: 1px solid #dddddd;
-        text-align: left;
+        .feedback-table th,
+        .feedback-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .feedback-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+    .feedback-item:hover {
+        background-color: #f1f1f1;
     }
 
-    th {
-        background-color: #f2f2f2;
+    .no-feedback {
+        color: #ff0000;
+        text-align: center;
+        font-size: 16px;
     }
 
     .button-container {
         margin-top: 20px;
+        text-align: center;
     }
 
     .back-button {
         padding: 10px 20px;
-        background-color: #218838;
+        background-color: #4CAF50;
         color: white;
         border: none;
         border-radius: 5px;
+        font-size: 16px;
         cursor: pointer;
+        transition: background-color 0.3s;
     }
 
         .back-button:hover {
-            background-color: #19692c;
+            background-color: #45a049;
         }
 </style>

@@ -1,12 +1,8 @@
-﻿<!--Topic: CSS-->
-<!--https://www.w3schools.com/css/ -->
-@*
-Index.cshtml
-*@
-
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <style>
         body {
@@ -20,35 +16,56 @@ Index.cshtml
             display: flex;
             justify-content: center;
             align-items: center;
+            font-family: Arial, sans-serif;
         }
 
+       
         .container {
             text-align: center;
-            padding: 20px;
-            max-width: 600px;
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+            border-radius: 15px;
         }
 
+       
+        .welcome-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+       
+        .select-task {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+      
         .btn {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 12px 24px;
+            font-size: 18px;
             margin: 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
+      
         .btn-green {
             background-color: #28a745;
             color: white;
         }
 
-            .btn-green:hover {
-                background-color: #218838;
-            }
+        .btn-green:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
 
         .btn-disabled {
             background-color: #d3d3d3;
@@ -56,36 +73,45 @@ Index.cshtml
             cursor: not-allowed;
         }
 
-        .welcome-text {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
+       
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .select-task {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #555;
+        .btn-container .btn {
+            width: 100%;
+            max-width: 300px;
+        }
+            .btn-container .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .welcome-text {
+                font-size: 28px;
+            }
+
+            .select-task {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="welcome-text">Welcome</div>
-        <div class="select-task">Select a task</div>
-        <button class="btn btn-green" onclick="location.href='@Url.Action("Report")'">Report Issue</button>
-        <button class="btn btn-green" onclick="location.href='@Url.Action("AllReports")'">View Reports</button>
-        <button class="btn btn-green" onclick="location.href='@Url.Action("Feedback")'">Give Feedback</button> 
-        <button class="btn btn-green" onclick="location.href='@Url.Action("DisplayFeedback")'">View user Feedback</button>
-        <button class="btn btn-green" onclick="location.href='@Url.Action("Events")'">Events and Announcements</button>
-        <button class="btn btn-green" onclick="location.href='@Url.Action("SubmitRequest", "ServiceRequest")'">Submit a Request</button>
-        <button class="btn btn-green" onclick="location.href='@Url.Action("Request", "ServiceRequest")'">View Requests</button>
+        <div class="welcome-text">Welcome to the Dashboard</div>
+        <div class="select-task">Please choose a task below</div>
+        <div class="btn-container">
+            <button class="btn btn-green" onclick="location.href='@Url.Action("Report")'">Report an Issue</button>
+            <button class="btn btn-green" onclick="location.href='@Url.Action("AllReports")'">View All Reports</button>
+            <button class="btn btn-green" onclick="location.href='@Url.Action("Feedback")'">Give Feedback</button>
+            <button class="btn btn-green" onclick="location.href='@Url.Action("DisplayFeedback")'">View Feedback</button>
+            <button class="btn btn-green" onclick="location.href='@Url.Action("Events")'">Events & Announcements</button>
+            <button class="btn btn-green" onclick="location.href='@Url.Action("SubmitRequest", "ServiceRequest")'">Submit a Service Request</button>
+            <button class="btn btn-green" onclick="location.href='@Url.Action("Request", "ServiceRequest")'">View Service Requests</button>
+        </div>
     </div>
-
-    @* <script>
-        function showComingSoon() {
-            alert('Coming Soon');
-        }
-    </script> *@
 </body>
 </html>
