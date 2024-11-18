@@ -93,6 +93,17 @@ In addition to the report and feedback management system, the application now in
 - Service Request Sorting (Tree): The application also maintains a binary search tree (BST) to organize service requests by their unique request ID. This allows quick searching and retrieval of specific service requests by their ID.
 - Search and Update: The application allows users to search service requests by name, description, or category. Users can also update the status of service requests (e.g., "Pending," "In Progress," "Resolved"), with status changes stored and easily accessible.
 
+Submit Request View
+
+- Here users can submit a service request
+- Users provide info such as name,description,category and upload a document
+- Once the submit button is clicked the request is filed
+
+ Request View
+
+ - Here users can view all the requst made
+ - Users can search for request
+
 Data structures 
 
 - Dictionaries:  _eventDictionary, _announcementDictionary, _feedbackDictionary: Hold items with unique keys so we can find them quickly and avoid duplicates.
@@ -103,6 +114,30 @@ Data structures
 - Priority Queue (Heap): A min-heap is used to manage service requests based on priority. Service requests are added to the heap, which keeps them sorted by their submission date, allowing for efficient retrieval of the highest priority requests.
   Binary Search Tree (BST):
 - A binary search tree is used to organize service requests by their unique request ID. This structure allows for efficient searching and sorting of requests based on their ID
+
+Service Request Status Data Structures
+
+Priority Queue (Min-Heap)
+The Min-Heap is a data structure used to manage service requests based on priority, ensuring the most urgent requests are handled first.
+Role: The heap is a binary tree where the parent node is always smaller than its child nodes. This allows the highest priority request to be accessed in constant time (O(1)) at the root.
+
+Efficiency:
+
+- Insertion: New requests are added in O(log n) time, with the heap property maintained.
+- Retrieval: The highest priority request is always at the root, accessible in O(1) time.
+- Deletion: Once processed, requests are removed in O(log n) time, with the next highest priority request moved to the root.
+- The heap optimizes the order in which requests are processed, reducing overhead and speeding up task handling.
+
+Binary Search Tree (BST)
+The Binary Search Tree (BST) organizes service requests by unique ID, enabling efficient searching and sorting.
+Role: Each node has at most two children, with the left child being smaller and the right child larger. This allows fast searching based on request ID.
+
+Efficiency:
+
+- Searching: Requests can be found in O(log n) time by traversing the tree based on the ID.
+- Insertion: New requests are inserted in O(log n) time, keeping the tree balanced.
+- Sorting: Requests can be sorted in O(n) time by traversing the tree in order.
+- The BST provides quick access, insertion, and sorting of service requests, improving overall application performance.
 
 Required
 Visual Studio
