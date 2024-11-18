@@ -61,7 +61,7 @@ public class ServiceRequestController : Controller
             request.AssignedTo = "John Doe";
 
             // Add the request to both the heap and the tree
-            _serviceRequestHeap.Add(request); // Add to heap for priority (SubmissionDate)
+            _serviceRequestHeap.Add(request); // Add to heap for priority 
             _serviceRequestTree.Add(request); // Add to tree for sorting by Id
 
             return RedirectToAction("SubmitRequest"); 
@@ -91,8 +91,6 @@ public class ServiceRequestController : Controller
         {
             TempData["Error"] = $"Request ID {id} not found.";
         }
-
-        // Redirect back to UpdateStatus, preserving the search query
         return RedirectToAction("UpdateStatus", new { searchQuery });
     }
 
@@ -108,8 +106,6 @@ public class ServiceRequestController : Controller
                             r.Category.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
-
-        // Create a dictionary for precomputing selected statuses
         var statusDictionary = new Dictionary<int, string>();
         foreach (var request in serviceRequests)
         {
