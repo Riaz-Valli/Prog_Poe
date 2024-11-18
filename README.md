@@ -84,6 +84,15 @@ View Events
 - Users can search for events based on category or date.
 - User will see reommended events based of their search history. The events from the most searched category will be recommend to the user.
 
+Service Request Management
+In addition to the report and feedback management system, the application now includes functionality to manage Service Requests, which are handled based on priority and organized for efficient tracking.
+
+- Service Request Submission: Users can submit service requests that include details like requester name, description, and category. The application supports the upload of related documents, which are stored and linked to the service request.
+- Service Request Priority (Heap): Service requests are handled based on priority. The application uses a min-heap to manage service requests, ensuring that the highest priority is processed first. This heap structure automatically organizes 
+  requests, making it easy to track and manage requests.
+- Service Request Sorting (Tree): The application also maintains a binary search tree (BST) to organize service requests by their unique request ID. This allows quick searching and retrieval of specific service requests by their ID.
+- Search and Update: The application allows users to search service requests by name, description, or category. Users can also update the status of service requests (e.g., "Pending," "In Progress," "Resolved"), with status changes stored and easily accessible.
+
 Data structures 
 
 - Dictionaries:  _eventDictionary, _announcementDictionary, _feedbackDictionary: Hold items with unique keys so we can find them quickly and avoid duplicates.
@@ -91,6 +100,9 @@ Data structures
 - Sets:uniqueCategories, uniqueDates: Collect unique categories and dates from events automatically, which helps create dropdowns in the view without duplicates.
   Using dictionaries and sets helps manage data faster and keeps it organized.
 - No use of queues because the code requires quick access to data using unique keys, which is better handled by dictionaries.
+- Priority Queue (Heap): A min-heap is used to manage service requests based on priority. Service requests are added to the heap, which keeps them sorted by their submission date, allowing for efficient retrieval of the highest priority requests.
+  Binary Search Tree (BST):
+- A binary search tree is used to organize service requests by their unique request ID. This structure allows for efficient searching and sorting of requests based on their ID
 
 Required
 Visual Studio
@@ -103,8 +115,4 @@ and extract the files.
 then the app. 
 3. Navigate: Use the buttons on the Home Page to navigate through the application.
 
-Future Updates
-
-- Events and Announcements: This feature is under development and will be available soon.
-- Service Request Status: This feature is under development and will be available soon.
 
